@@ -1,15 +1,19 @@
 import React from "react";
 import { FormBuilder } from "./components";
+import FormViewerComponent from "./components/FormViewer";
 import { LAYOUT } from "./constants/styles";
 
 /**
  * Main App Component
- * Simplified to work with FormBuilder's built-in storage
+ * Renders either FormBuilder or FormViewer based on configuration
  */
 function App() {
+  // Check if we're in form view mode
+  const isFormView = window.FORM_VIEW_CONFIG !== undefined;
+  console.log(isFormView);
   return (
     <div style={LAYOUT.container}>
-      <FormBuilder />
+      {isFormView ? <FormViewerComponent /> : <FormBuilder />}
     </div>
   );
 }

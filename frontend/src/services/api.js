@@ -97,52 +97,6 @@ export const formsApi = {
   },
 };
 
-/**
- * Form submissions API service
- */
-export const submissionsApi = {
-  /**
-   * Get all submissions
-   * @returns {Promise} List of submissions
-   */
-  getAll: async () => {
-    const response = await apiRequest(config.API_ENDPOINTS.SUBMISSIONS.LIST);
-    return response.json();
-  },
-
-  /**
-   * Get submissions for a specific form
-   * @param {string|number} formId - Form ID
-   * @returns {Promise} List of submissions for the form
-   */
-  getByForm: async (formId) => {
-    const response = await apiRequest(config.API_ENDPOINTS.SUBMISSIONS.BY_FORM(formId));
-    return response.json();
-  },
-
-  /**
-   * Create a new submission
-   * @param {object} submissionData - Submission data
-   * @returns {Promise} Created submission
-   */
-  create: async (submissionData) => {
-    const response = await apiRequest(config.API_ENDPOINTS.SUBMISSIONS.CREATE, {
-      method: 'POST',
-      body: JSON.stringify(submissionData),
-    });
-    return response.json();
-  },
-
-  /**
-   * Get a specific submission by ID
-   * @param {string|number} id - Submission ID
-   * @returns {Promise} Submission data
-   */
-  getById: async (id) => {
-    const response = await apiRequest(config.API_ENDPOINTS.SUBMISSIONS.DETAIL(id));
-    return response.json();
-  },
-};
 
 /**
  * Generic API service for custom endpoints

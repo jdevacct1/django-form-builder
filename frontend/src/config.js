@@ -19,15 +19,6 @@ const config = {
       DELETE: (id) => `/formbuilder/api/forms/${id}/`,
     },
 
-    // Form submissions endpoints
-    SUBMISSIONS: {
-      LIST: '/formbuilder/api/submissions/',
-      CREATE: '/formbuilder/api/submissions/',
-      DETAIL: (id) => `/formbuilder/api/submissions/${id}/`,
-      UPDATE: (id) => `/formbuilder/api/submissions/${id}/`,
-      DELETE: (id) => `/formbuilder/api/submissions/${id}/`,
-      BY_FORM: (formId) => `/formbuilder/api/forms/${formId}/submissions/`,
-    },
 
     // Authentication endpoints (if needed in future)
     AUTH: {
