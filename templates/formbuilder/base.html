@@ -1,0 +1,44 @@
+{% load static %}
+{% load vite_assets %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Django Form Builder{% endblock %}</title>
+
+    <!-- Base Styles -->
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/common.css' %}">
+
+    <!-- Page-specific styles -->
+    {% block extra_css %}{% endblock %}
+
+    <!-- Vite Assets (for React app) -->
+    {% block vite_assets %}{% endblock %}
+</head>
+<body>
+    <!-- Top Navigation -->
+    {% block navigation %}
+    <nav class="top-nav">
+        <div class="container">
+            <a href="{% url 'forms_list' %}" class="nav-brand">Django Form Builder</a>
+            <div class="nav-links">
+                <a href="{% url 'forms_list' %}" class="nav-link">Forms List</a>
+                <a href="{% url 'form_builder' %}" class="nav-link">Form Builder</a>
+            </div>
+        </div>
+    </nav>
+    {% endblock %}
+
+    <!-- Main Content -->
+    {% block content_wrapper %}
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    {% endblock %}
+
+    <!-- Page-specific JavaScript -->
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,107 @@
+{% extends 'formbuilder/base.html' %}
+{% load static %}
+
+{% block title %}{{ form.name }} - Django Form Builder{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/form_detail.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="breadcrumb">
+        <a href="{% url 'forms_list' %}">Forms List</a> / {{ form.name }}
+    </div>
+
+    <div class="header">
+        <h1>{{ form.name }}</h1>
+        <p>Form created on {{ form.created|date:"F d, Y \a\t H:i" }}</p>
+        <div class="header-meta">
+            <div>
+                <strong>Last Updated:</strong> {{ form.modified|date:"F d, Y \a\t H:i" }}
+            </div>
+            <span class="status-badge {% if form.is_active %}status-active{% else %}status-inactive{% endif %}">
+                {% if form.is_active %}Active{% else %}Inactive{% endif %}
+            </span>
+        </div>
+    </div>
+
+    <div class="actions">
+        <a href="{% url 'form_builder' %}" class="btn">Edit Form</a>
+        <a href="{% url 'forms_list' %}" class="btn btn-secondary">Back to List</a>
+        <a href="{% url 'form_builder' %}" class="btn btn-success">Create New Form</a>
+    </div>
+
+    <div class="content-grid">
+        <div class="card">
+            <div class="card-header">
+                <h2>Form Statistics</h2>
+            </div>
+            <div class="card-body">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number">{{ component_count }}</div>
+                        <div class="stat-label">Components</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">{{ submission_count }}</div>
+                        <div class="stat-label">Submissions</div>
+                    </div>
+                </div>
+
+                {% if component_types %}
+                    <div class="component-types">
+                        <h3>Component Types Used:</h3>
+                        <div class="component-tags">
+                            {% for type in component_types %}
+                                <span class="component-tag">{{ type }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2>Form Schema</h2>
+            </div>
+            <div class="card-body">
+                <div class="schema-preview">
+                    <pre>{{ form.schema|pprint }}</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card" style="margin-top: 30px;">
+        <div class="card-header">
+            <h2>Recent Submissions</h2>
+        </div>
+        <div class="card-body">
+            {% if recent_submissions %}
+                <div class="submissions-list">
+                    {% for submission in recent_submissions %}
+                        <div class="submission-item">
+                            <div class="submission-meta">
+                                <span class="submission-date">{{ submission.created|date:"M d, Y H:i" }}</span>
+                                {% if submission.ip_address %}
+                                    <span class="submission-ip">{{ submission.ip_address }}</span>
+                                {% endif %}
+                            </div>
+                            <div class="submission-data">
+                                {{ submission.data|pprint }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <h3>No Submissions Yet</h3>
+                    <p>This form hasn't received any submissions yet.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,159 @@
+{% extends 'formbuilder/base.html' %}
+{% load static %}
+{% csrf_token %}
+
+{% block title %}Forms List - Django Form Builder{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/forms_list.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="header">
+        <h1>Forms List</h1>
+        <p>Manage and view all your saved forms</p>
+    </div>
+
+    <div class="stats">
+        <div class="stat-card">
+            <h3>{{ total_forms }}</h3>
+            <p>Total Forms</p>
+        </div>
+        <div class="stat-card">
+            <h3>{{ active_forms }}</h3>
+            <p>Active Forms</p>
+        </div>
+        <div class="stat-card">
+            <h3>{{ total_submissions }}</h3>
+            <p>Total Submissions</p>
+        </div>
+    </div>
+
+    <div class="actions">
+        <a href="{% url 'form_builder' %}" class="btn">Create New Form</a>
+        <a href="{% url 'form_builder' %}" class="btn btn-secondary">Form Builder</a>
+    </div>
+
+    {% if forms %}
+        <div class="forms-grid">
+            {% for form in forms %}
+                <div class="form-card" data-form-id="{{ form.pk }}">
+                    <div class="form-card-header">
+                        <div class="form-card-title">{{ form.name }}</div>
+                        <div class="form-card-meta">
+                            <span>{{ form.created|date:"M d, Y" }}</span>
+                            <span class="status-badge {% if form.is_active %}status-active{% else %}status-inactive{% endif %}">
+                                {% if form.is_active %}Active{% else %}Inactive{% endif %}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-card-body">
+                        <div class="form-stats">
+                            <div class="form-stat">
+                                <div class="form-stat-number">{{ form.component_count }}</div>
+                                <div class="form-stat-label">Components</div>
+                            </div>
+                            <div class="form-stat">
+                                <div class="form-stat-number">{{ form.submission_count }}</div>
+                                <div class="form-stat-label">Submissions</div>
+                            </div>
+                        </div>
+
+                        {% if form.component_types %}
+                            <div class="component-types">
+                                <h4>Component Types:</h4>
+                                <div class="component-tags">
+                                    {% for type in form.component_types %}
+                                        <span class="component-tag">{{ type }}</span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-card-footer">
+                        <div class="form-timestamp">
+                            <small>Updated: {{ form.modified|date:"M d, Y H:i" }}</small>
+                        </div>
+                        <div class="form-actions">
+                            <a href="{% url 'form_detail' form.pk %}" class="btn btn-sm">View</a>
+                            <a href="{% url 'form_builder_with_id' form.pk %}" class="btn btn-sm btn-secondary">Edit</a>
+                            <button onclick="deleteForm({{ form.pk }}, '{{ form.name|escapejs }}')" class="btn btn-sm btn-danger">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        {% if is_paginated %}
+            <div class="pagination">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">&laquo; First</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">Next</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+                {% endif %}
+            </div>
+        {% endif %}
+    {% else %}
+        <div class="empty-state">
+            <h3>No Forms Found</h3>
+            <p>You haven't created any forms yet. Start building your first form!</p>
+            <a href="{% url 'form_builder' %}" class="btn">Create Your First Form</a>
+        </div>
+    {% endif %}
+</div>
+
+{% block extra_js %}
+<script>
+function deleteForm(formId, formName) {
+    if (confirm(`Are you sure you want to delete "${formName}"? This action cannot be undone.`)) {
+        console.log('Deleting form:', formId, formName);
+
+        fetch(`/formbuilder/api/forms/${formId}/`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        .then(response => {
+            console.log('Delete response:', response.status, response.statusText);
+            if (response.ok) {
+                // Remove the form card from the DOM
+                const formCard = document.querySelector(`[data-form-id="${formId}"]`);
+                console.log('Form card found:', formCard);
+                if (formCard) {
+                    formCard.remove();
+                    console.log('Form card removed from DOM');
+                }
+
+                // Show success message
+                alert('Form deleted successfully!');
+
+                // Reload the page to update the stats
+                window.location.reload();
+            } else {
+                return response.json().then(data => {
+                    console.error('Delete failed:', data);
+                    throw new Error(data.error || 'Failed to delete form');
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error deleting form:', error);
+            alert(`Error deleting form: ${error.message}`);
+        });
+    }
+}
+</script>
+{% endblock %}
+{% endblock %}

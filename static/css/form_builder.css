@@ -1,0 +1,7 @@
+/* Form Builder Specific Styles */
+
+/* React App Container */
+#root {
+    height: calc(100vh - 60px); /* Account for navigation height */
+    width: 100%;
+}

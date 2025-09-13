@@ -1,0 +1,26 @@
+{% extends 'formbuilder/base.html' %}
+{% load static %}
+{% load vite_assets %}
+
+{% block title %}Form Builder - Django Form Builder{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/form_builder.css' %}">
+{% endblock %}
+
+{% block vite_assets %}
+{% vite_assets %}
+{% endblock %}
+
+{% block content_wrapper %}
+<!-- React App -->
+<div id="root"></div>
+
+<!-- Pass form ID to React app -->
+<script>
+  window.FORM_BUILDER_CONFIG = {
+    formId: {{ form_id|default:"null" }},
+    formName: "{{ form_name|default:"" }}"
+  };
+</script>
+{% endblock %}

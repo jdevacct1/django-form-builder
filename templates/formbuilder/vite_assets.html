@@ -1,0 +1,7 @@
+{% load static %}
+{% if css_url %}
+<link rel="stylesheet" href="{{ css_url }}">
+{% endif %}
+{% if js_url %}
+<script type="module" src="{{ js_url }}"></script>
+{% endif %}
