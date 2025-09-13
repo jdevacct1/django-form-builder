@@ -1,0 +1,104 @@
+/* Form View Specific Styles */
+
+/* Form container */
+.form-view-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Form title */
+.form-view-title {
+    font-size: 2rem;
+    color: #213547;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+/* Form styling */
+.form-view-container .rs-form {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Submit button */
+.form-view-container .rs-btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    padding: 12px 24px;
+    font-size: 1rem;
+    border-radius: 6px;
+}
+
+.form-view-container .rs-btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+/* Form fields */
+.form-view-container .rs-form-group {
+    margin-bottom: 20px;
+}
+
+.form-view-container .rs-form-label {
+    font-weight: 600;
+    color: #213547;
+    margin-bottom: 8px;
+}
+
+.form-view-container .rs-input {
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    padding: 12px;
+    font-size: 1rem;
+}
+
+.form-view-container .rs-input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Textarea */
+.form-view-container .rs-textarea {
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    padding: 12px;
+    font-size: 1rem;
+    min-height: 100px;
+}
+
+/* Select */
+.form-view-container .rs-select {
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+}
+
+/* Checkbox and Radio */
+.form-view-container .rs-checkbox,
+.form-view-container .rs-radio {
+    margin-bottom: 10px;
+}
+
+/* Error states */
+.form-view-container .rs-form-error {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 5px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .form-view-container {
+        padding: 10px;
+    }
+
+    .form-view-container .rs-form {
+        padding: 20px;
+    }
+
+    .form-view-title {
+        font-size: 1.5rem;
+    }
+}

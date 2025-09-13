@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Form, FormSubmission
+from .models import Form
 
 
 @admin.register(Form)
@@ -18,24 +18,6 @@ class FormAdmin(admin.ModelAdmin):
         }),
         ('Timestamps', {
             'fields': ('created', 'modified'),
-            'classes': ('collapse',)
-        }),
-    )
-
-
-@admin.register(FormSubmission)
-class FormSubmissionAdmin(admin.ModelAdmin):
-    list_display = ['form', 'created', 'ip_address']
-    list_filter = ['created', 'form']
-    search_fields = ['form__name', 'ip_address']
-    readonly_fields = ['created', 'modified']
-
-    fieldsets = (
-        ('Submission Details', {
-            'fields': ('form', 'data')
-        }),
-        ('Metadata', {
-            'fields': ('created', 'modified', 'ip_address', 'user_agent'),
             'classes': ('collapse',)
         }),
     )

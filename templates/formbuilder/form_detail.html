@@ -27,7 +27,8 @@
     </div>
 
     <div class="actions">
-        <a href="{% url 'form_builder' %}" class="btn">Edit Form</a>
+        <a href="{% url 'form_view' form.pk %}" class="btn">View Form</a>
+        <a href="{% url 'form_builder_with_id' form.pk %}" class="btn">Edit Form</a>
         <a href="{% url 'forms_list' %}" class="btn btn-secondary">Back to List</a>
         <a href="{% url 'form_builder' %}" class="btn btn-success">Create New Form</a>
     </div>
@@ -42,10 +43,6 @@
                     <div class="stat-item">
                         <div class="stat-number">{{ component_count }}</div>
                         <div class="stat-label">Components</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">{{ submission_count }}</div>
-                        <div class="stat-label">Submissions</div>
                     </div>
                 </div>
 
@@ -74,34 +71,5 @@
         </div>
     </div>
 
-    <div class="card" style="margin-top: 30px;">
-        <div class="card-header">
-            <h2>Recent Submissions</h2>
-        </div>
-        <div class="card-body">
-            {% if recent_submissions %}
-                <div class="submissions-list">
-                    {% for submission in recent_submissions %}
-                        <div class="submission-item">
-                            <div class="submission-meta">
-                                <span class="submission-date">{{ submission.created|date:"M d, Y H:i" }}</span>
-                                {% if submission.ip_address %}
-                                    <span class="submission-ip">{{ submission.ip_address }}</span>
-                                {% endif %}
-                            </div>
-                            <div class="submission-data">
-                                {{ submission.data|pprint }}
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-            {% else %}
-                <div class="empty-state">
-                    <h3>No Submissions Yet</h3>
-                    <p>This form hasn't received any submissions yet.</p>
-                </div>
-            {% endif %}
-        </div>
-    </div>
 </div>
 {% endblock %}

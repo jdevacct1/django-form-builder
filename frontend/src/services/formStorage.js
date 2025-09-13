@@ -11,8 +11,9 @@ import { formsApi } from './api';
  * Works directly with form IDs from URL parameters
  */
 export class DjangoFormStorage {
-  constructor(formId = null) {
+  constructor(formId = null, getFormName = null) {
     this.formId = formId;
+    this.getFormName = getFormName; // Function to get current form name
   }
 
   async getFormNames() {
@@ -143,23 +144,19 @@ export class DjangoFormStorage {
     try {
       const formBuilderSchema = JSON.parse(formValue);
 
-      // Only save the schema part (the form structure)
+      // Always prioritize the getter function if available, otherwise use the passed formName
+      const currentFormName = this.getFormName ? this.getFormName() : formName;
+
       const formData = {
         schema: formBuilderSchema,
+        name: currentFormName || 'Untitled Form'
       };
 
       if (this.formId) {
         // Update existing form using ID from URL
         await formsApi.update(this.formId, formData);
-      } else if (formName) {
-        // Create new form with the given name
-        const newFormData = {
-          ...formData,
-          name: formName
-        };
-        await formsApi.create(newFormData);
       } else {
-        // Create new form without a name
+        // Create new form
         await formsApi.create(formData);
       }
 

@@ -15,21 +15,6 @@
         <p>Manage and view all your saved forms</p>
     </div>
 
-    <div class="stats">
-        <div class="stat-card">
-            <h3>{{ total_forms }}</h3>
-            <p>Total Forms</p>
-        </div>
-        <div class="stat-card">
-            <h3>{{ active_forms }}</h3>
-            <p>Active Forms</p>
-        </div>
-        <div class="stat-card">
-            <h3>{{ total_submissions }}</h3>
-            <p>Total Submissions</p>
-        </div>
-    </div>
-
     <div class="actions">
         <a href="{% url 'form_builder' %}" class="btn">Create New Form</a>
         <a href="{% url 'form_builder' %}" class="btn btn-secondary">Form Builder</a>
@@ -54,10 +39,6 @@
                             <div class="form-stat">
                                 <div class="form-stat-number">{{ form.component_count }}</div>
                                 <div class="form-stat-label">Components</div>
-                            </div>
-                            <div class="form-stat">
-                                <div class="form-stat-number">{{ form.submission_count }}</div>
-                                <div class="form-stat-label">Submissions</div>
                             </div>
                         </div>
 

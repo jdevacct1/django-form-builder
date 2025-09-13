@@ -1,0 +1,26 @@
+{% extends 'formbuilder/base.html' %}
+{% load static %}
+{% load vite_assets %}
+
+{% block title %}{{ form_name }} - Form View{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/form_view.css' %}">
+{% endblock %}
+
+{% block vite_assets %}
+{% vite_assets %}
+{% endblock %}
+
+{% block content_wrapper %}
+<!-- React App -->
+<div id="root"></div>
+
+<!-- Pass form data to React app -->
+<script>
+  window.FORM_VIEW_CONFIG = {
+    formId: {{ form_id|default:"null" }},
+    formName: "{{ form_name|default:"" }}"
+  };
+</script>
+{% endblock %}

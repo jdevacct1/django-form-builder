@@ -76,26 +76,3 @@ class Form(TimeStampedModel):
         return []
 
 
-class FormSubmission(TimeStampedModel):
-    """
-    Model to store form submissions
-    """
-    form = models.ForeignKey(Form, on_delete=models.CASCADE, related_name='submissions')
-    data = models.JSONField(help_text="Submitted form data")
-    ip_address = models.GenericIPAddressField(null=True, blank=True)
-    user_agent = models.TextField(null=True, blank=True)
-
-    class Meta:
-        ordering = ['-created']
-        verbose_name = "Form Submission"
-        verbose_name_plural = "Form Submissions"
-
-    def __str__(self):
-        return f"Submission for {self.form.name} at {self.created}"
-
-    @property
-    def submitted_at(self):
-        """
-        Alias for created to maintain backward compatibility
-        """
-        return self.created

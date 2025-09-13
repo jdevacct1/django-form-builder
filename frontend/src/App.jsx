@@ -10,7 +10,6 @@ import { LAYOUT } from "./constants/styles";
 function App() {
   // Check if we're in form view mode
   const isFormView = window.FORM_VIEW_CONFIG !== undefined;
-  console.log(isFormView);
   return (
     <div style={LAYOUT.container}>
       {isFormView ? <FormViewerComponent /> : <FormBuilder />}
