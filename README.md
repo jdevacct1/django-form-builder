@@ -101,6 +101,10 @@ The Django server will be available at `http://localhost:8000`
 
 ### Frontend Setup (React)
 
+The frontend is automatically built and served by Django's `runserver` command, so no additional setup is required for basic usage.
+
+**For development and debugging:**
+
 1. **Navigate to the frontend directory:**
    ```bash
    cd frontend
@@ -111,12 +115,14 @@ The Django server will be available at `http://localhost:8000`
    npm install
    ```
 
-3. **Start the development server:**
+3. **Start the development server (optional):**
    ```bash
    npm run dev
    ```
 
-The React app will be available at `http://localhost:5173`
+   This will start the Vite development server at `http://localhost:5173` with hot reloading for debugging and development work.
+
+**Note:** The Django server (`python manage.py runserver`) automatically handles the frontend build files, so the React app is accessible through Django at `http://localhost:8000`. Use `npm run dev` only if you need the development server features like hot reloading.
 
 ## URL Routes
 
