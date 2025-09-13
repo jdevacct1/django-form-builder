@@ -1,14 +1,36 @@
 # Django Form Builder
 
-A full-stack form builder application built with Django and React. This application allows users to create dynamic forms using a visual form builder interface and save them to a database.
+A full-stack form builder application built with Django and React using FormEngine (React Form Builder). This application allows users to create dynamic forms using a visual form builder interface, save them to a database, and render them for end users.
 
 ## Features
 
-- **Visual Form Builder**: Drag-and-drop interface for creating forms
-- **Form Management**: Save, update, and manage form schemas
-- **Form Submissions**: Collect and store form submissions
-- **RESTful API**: Complete API for form and submission management
-- **Admin Interface**: Django admin interface for managing forms and submissions
+- **Visual Form Builder**: Drag-and-drop interface powered by FormEngine
+- **Inline Form Naming**: Click-to-edit form names with real-time updates
+- **Form Management**: Save, update, and manage form schemas with ID-based storage
+- **Form Viewer**: Built-in form renderer for displaying forms to end users
+- **RESTful API**: Complete API for form CRUD operations
+- **Admin Interface**: Django admin interface for managing forms
+- **URL-based Form Loading**: Load forms by ID through URL parameters
+- **Schema Compatibility**: Handles both legacy and modern form schemas
+
+## Key Technologies
+
+- **Backend**: Django 4.2+ with Django REST Framework
+- **Frontend**: React 18+ with FormEngine (React Form Builder)
+- **Form Engine**: Professional form builder with drag-and-drop interface
+- **Storage**: ID-based form storage with real-time name updates
+- **Styling**: Custom CSS with responsive design
+- **Database**: SQLite (development) / PostgreSQL (production ready)
+
+## Recent Improvements
+
+- ✅ **Inline Form Naming**: Click-to-edit form names with auto-save
+- ✅ **Form Viewer**: Built-in form renderer for end users
+- ✅ **URL-based Loading**: Load forms by ID through URL parameters
+- ✅ **Schema Migration**: Automatic handling of legacy form schemas
+- ✅ **Clean Interface**: Removed unnecessary statistics cards
+- ✅ **FormEngine Integration**: Full integration with professional form builder
+- ✅ **Real-time Updates**: Form names sync with form saves automatically
 
 ## Project Structure
 
@@ -18,16 +40,28 @@ django_form_builder/
 │   ├── settings/                 # Environment-specific settings
 │   └── urls.py                   # Main URL configuration
 ├── formbuilder/                  # Main Django app
-│   ├── models.py                 # Form and FormSubmission models
-│   ├── views.py                  # API views for forms and submissions
+│   ├── models.py                 # Form model (FormSubmission removed)
+│   ├── views.py                  # Views for forms, builder, and viewer
 │   ├── urls.py                   # App URL configuration
 │   ├── admin.py                  # Django admin configuration
-│   └── templates/                # HTML templates
+│   ├── templates/                # HTML templates
+│   │   ├── form_builder.html     # Form builder interface
+│   │   ├── form_view.html        # Form viewer interface
+│   │   ├── forms_list.html       # Forms list page
+│   │   └── form_detail.html      # Form detail page
+│   └── static/css/               # CSS stylesheets
 ├── frontend/                     # React frontend
 │   ├── src/
-│   │   ├── App.jsx              # Main React component
-│   │   ├── services/api.js       # API service layer
-│   │   └── config.js             # Configuration settings
+│   │   ├── App.jsx              # Main React component with routing
+│   │   ├── components/
+│   │   │   ├── FormBuilder.jsx   # Form builder component
+│   │   │   ├── FormViewer.jsx    # Form viewer component
+│   │   │   └── FormNameEditor.jsx # Inline form name editor
+│   │   ├── services/
+│   │   │   ├── api.js            # API service layer
+│   │   │   └── formStorage.js    # FormEngine storage implementation
+│   │   ├── config.js            # Configuration settings
+│   │   └── constants/styles.js   # Style constants
 │   └── package.json              # Frontend dependencies
 └── requirements.txt              # Python dependencies
 ```
@@ -84,9 +118,17 @@ The Django server will be available at `http://localhost:8000`
 
 The React app will be available at `http://localhost:5173`
 
-## API Endpoints
+## URL Routes
 
-### Forms API
+### Main Views
+
+- `GET /formbuilder/` - Form builder interface (new form)
+- `GET /formbuilder/{id}/` - Form builder interface (edit existing form)
+- `GET /formbuilder/{id}/view/` - Form viewer interface (render form)
+- `GET /formbuilder/forms/` - Forms list page
+- `GET /formbuilder/forms/{id}/` - Form detail page
+
+### API Endpoints
 
 - `GET /formbuilder/api/forms/` - Get all forms
 - `GET /formbuilder/api/forms/{id}/` - Get specific form
@@ -94,27 +136,27 @@ The React app will be available at `http://localhost:5173`
 - `PUT /formbuilder/api/forms/{id}/` - Update form
 - `DELETE /formbuilder/api/forms/{id}/` - Delete form
 
-### Submissions API
-
-- `GET /formbuilder/api/submissions/` - Get all submissions
-- `GET /formbuilder/api/forms/{id}/submissions/` - Get submissions for a form
-- `POST /formbuilder/api/submissions/` - Create new submission
-
 ## Usage
 
 ### Creating a Form
 
-1. Open the form builder interface at `http://localhost:5173`
-2. Enter a form name in the input field
+1. Navigate to `http://localhost:8000/formbuilder/` (new form) or `http://localhost:8000/formbuilder/{id}/` (edit existing)
+2. Click on the form name at the top to edit it inline
 3. Drag and drop form components from the left panel
 4. Configure component properties in the right panel
-5. Click "Save form" to save the form schema to the database
+5. The form automatically saves as you work
+
+### Viewing Forms
+
+1. Navigate to `http://localhost:8000/formbuilder/{id}/view/` to see the rendered form
+2. The form displays exactly as end users would see it
+3. Form validation and submission handling are built-in
 
 ### Managing Forms
 
-- Access the Django admin interface at `http://localhost:8000/admin/`
-- View, edit, and delete forms and submissions
-- Monitor form usage and submission data
+- Access the forms list at `http://localhost:8000/formbuilder/forms/`
+- View form details, edit, or delete forms
+- Access the Django admin interface at `http://localhost:8000/admin/` for advanced management
 
 ## Testing
 
@@ -126,34 +168,34 @@ Run the included test script to verify API functionality:
 python test_api.py
 ```
 
-This script will test all API endpoints and verify that forms can be created, retrieved, updated, and that submissions can be created and retrieved.
+This script will test all API endpoints and verify that forms can be created, retrieved, updated, and deleted.
 
 ### Manual Testing
 
-1. Start both Django and React servers
-2. Open the form builder interface
-3. Create a form with some components
-4. Save the form
-5. Check the Django admin to verify the form was saved
-6. Test form submissions using the API
+1. Start the Django server: `python manage.py runserver`
+2. Navigate to `http://localhost:8000/formbuilder/` to create a new form
+3. Edit the form name by clicking on it
+4. Add form components using the drag-and-drop interface
+5. Navigate to `http://localhost:8000/formbuilder/forms/` to see your forms
+6. Click "View Form" to see the rendered form
+7. Click "Edit" to modify the form
+8. Check the Django admin at `http://localhost:8000/admin/` to verify data
 
 ## Data Models
 
 ### Form Model
 
-- `name`: Form name (CharField)
+- `name`: Form name (CharField, max_length=255)
 - `schema`: Form schema in JSON format (JSONField)
-- `created_at`: Creation timestamp (DateTimeField)
-- `updated_at`: Last update timestamp (DateTimeField)
-- `is_active`: Whether the form is active (BooleanField)
+- `created`: Creation timestamp (DateTimeField, auto-created)
+- `modified`: Last update timestamp (DateTimeField, auto-updated)
+- `is_active`: Whether the form is active (BooleanField, default=True)
 
-### FormSubmission Model
+### Model Methods
 
-- `form`: Reference to the form (ForeignKey)
-- `data`: Submitted form data (JSONField)
-- `submitted_at`: Submission timestamp (DateTimeField)
-- `ip_address`: Submitter's IP address (GenericIPAddressField)
-- `user_agent`: Submitter's user agent (TextField)
+- `get_component_count()`: Returns the number of components in the form
+- `get_component_types()`: Returns a list of component types used in the form
+- `get_schema()`: Returns the schema as a Python object
 
 ## Configuration
 
